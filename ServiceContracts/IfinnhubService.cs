@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a service that makes HTTP requests to finnhub.io
     /// </summary>
-    public interface IfinnhubService
+    public interface IFinnhubService
     {
         /// <summary>
         /// Returns company details such as company country, currency, exchange, IPO date, logo image, etc.

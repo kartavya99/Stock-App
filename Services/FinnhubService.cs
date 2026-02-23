@@ -5,10 +5,10 @@ using System.Text.Json;
 
 namespace Services
 {
-    public class FinnhubService : IfinnhubService
+    public class FinnhubService : IFinnhubService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IConfiguration _configuration
+        private readonly IConfiguration _configuration;
 
 
         public FinnhubService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
@@ -27,13 +27,14 @@ namespace Services
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri($"https://finnhub.io/api/v1/stock/profile2?symbol={stockSymbol}&token={_configuration["FinnhubToken"]}")
+                
             };
 
             //Send request
             HttpResponseMessage httpResponseMessage = httpClient.Send(httpRequestMessage);
 
             //read response body
-            string responseBody = new StreamReader(httpRequestMessage.Content.ReadAsStream()).ReadToEnd();
+            string responseBody = new StreamReader(httpResponseMessage.Content.ReadAsStream()).ReadToEnd();
 
             // convert response boyd (from JSON into Dictionary)
             Dictionary<string, object>? responseDictionary = JsonSerializer.Deserialize<Dictionary<string, object>>(responseBody);
@@ -59,13 +60,13 @@ namespace Services
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri($"https://finnhub.io/api/v1/quote?symbol={stockSymbol}&token={_configuration["FinnhubToken"]}")
-            };
+            };           
 
             //Send request
             HttpResponseMessage httpResponseMessage = httpClient.Send(httpRequestMessage);
 
             //read response body
-            string responseBody = new StreamReader(httpRequestMessage.Content.ReadAsStream()).ReadToEnd();
+            string responseBody = new StreamReader(httpResponseMessage.Content.ReadAsStream()).ReadToEnd();
 
             // convert response boyd (from JSON into Dictionary)
             Dictionary<string, object>? responseDictionary = JsonSerializer.Deserialize<Dictionary<string, object>>(responseBody);
