@@ -13,7 +13,7 @@ namespace Entities
     public class SellOrder
     {
         [Key]
-        public Guid SellOrderId { get; set; }
+        public Guid SellOrderID { get; set; }
 
         public string StockSymbol { get; set; }
 
