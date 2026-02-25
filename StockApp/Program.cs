@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.Configure<TradingOptions>(builder.Configuration.GetSection("TreadingOptions"));
 builder.Services.AddSingleton<IFinnhubService, FinnhubService>();
+builder.Services.AddSingleton<IStocksService, StockService>();
 builder.Services.AddHttpClient();
 
 
