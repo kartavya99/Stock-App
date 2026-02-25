@@ -47,6 +47,11 @@ namespace ServiceContracts.DTO
             return StockSymbol.GetHashCode();
         }
 
+
+        /// <summary>
+        /// COnvers the current object into string which includes the values of all properties
+        /// </summary>
+        /// <returns>A string with values of all properties of current object</returns>
         public override string ToString()
         {
             return $"Buy Order ID: {BuyOrderID}, Stock Symbol: {StockSymbol}, Date and Time of Buy Order: {DateAndTimeOfOrder.ToString("dd MM yyyy hh:mm ss tt")}, Quantity: {Quantity}, Buy Price: {Price}, Trade Amount: {TradeAmount}";
