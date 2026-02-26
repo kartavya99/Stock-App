@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ServiceContracts;
+using ServiceContracts.DTO;
 using StockApp.Models;
 
 namespace StockApp.Controlers
@@ -10,12 +11,14 @@ namespace StockApp.Controlers
     {
         private readonly TradingOptions _tradingOptions;
         private readonly IFinnhubService _finnhubService;
+        private readonly IStocksService _stocksService;
         private readonly IConfiguration _configuration;
 
-        public TradeController(IOptions<TradingOptions> tradingOptions, IFinnhubService finnhubService, IConfiguration configuration )
+        public TradeController(IOptions<TradingOptions> tradingOptions, IStocksService stockService, IFinnhubService finnhubService, IConfiguration configuration )
         {
             _tradingOptions = tradingOptions.Value;
             _finnhubService = finnhubService;
+            _stocksService = stockService;
             _configuration = configuration;
         }
 
@@ -53,6 +56,31 @@ namespace StockApp.Controlers
             ViewBag.FinnhubToken = _configuration["FinnhubToken"];
 
             return View(stockTrade);
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public IActionResult BuyOrder(BuyOrderRequest buyOrderRequest)
+        {
+            //update date of order
+            buyOrderRequest.DateAndTimeOfOrder = DateTime.Now;
+
+            //re-validate the model object after updating the date
+            ModelState.Clear();
+            TryValidateModel(buyOrderRequest);
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                StockTrade stockTrade = new StockTrade() { StockName = buyOrderRequest.StockName, Quantity = buyOrderRequest.Quantity, StockSymbol = buyOrderRequest.StockSymbol };
+                return View("Index", stockTrade);
+            }
+
+            //invoke servie method
+            BuyOrderResponse buyOrderResponse = _stocksService.CreateBuyOrder(buyOrderRequest);
+
+            return RedirectToAction(nameof(Orders));
+
         }
     }
 }
