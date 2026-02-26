@@ -17,18 +17,8 @@ namespace Services
         {
             _buyOrders = new List<BuyOrder>();
             _sellOrders = new List<SellOrder>();
-        }
+        }         
 
-        
-        public List<BuyOrderResponse> GetBuyOrders()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<SellOrderResponse> GetSellOrders()
-        {
-            throw new NotImplementedException();
-        }
         public BuyOrderResponse CreateBuyOrder(BuyOrderRequest? buyOrderRequest)
         {
             //Validation: buyOrederRequest can't be bull
@@ -68,17 +58,16 @@ namespace Services
             return sellOrder.ToSellOrderResponse();
 
         }
+        public List<BuyOrderResponse> GetBuyOrders()
+        {
+            return _buyOrders.OrderByDescending(temp => temp.DateAndTimeOfOrder)
+                .Select(temp => temp.ToBuyOrderResponse()).ToList();
+        }
 
-        //public List<BuyOrderResponse> GetBuyOrders()
-        //{
-        //    return _buyOrders.OrderByDescending(temp => temp.DateAndTimeOfOrder)
-        //        .Select(temp => temp.ToBuyOrderResponse()).ToList();
-        //}
-
-        //public List<SellOrderResponse> GetSellOrders()
-        //{
-        //    return _sellOrders.OrderByDescending(temp => temp.DateAndTimeOfOrder)
-        //        .Select(temp => temp.ToSellOrderResponse()).ToList();
-        //}
+        public List<SellOrderResponse> GetSellOrders()
+        {
+            return _sellOrders.OrderByDescending(temp => temp.DateAndTimeOfOrder)
+                .Select(temp => temp.ToSellOrderResponse()).ToList();
+        }
     }
 }

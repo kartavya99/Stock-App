@@ -11,12 +11,12 @@ namespace ServiceContracts.DTO
     /// DTO class that represents a buy order to purchase the stocks - that can be used as return type of Stock service
     /// </summary>
     public class BuyOrderResponse
-    {    
+    {
         public Guid BuyOrderID { get; set; }
         public string StockSymbol { get; set; }
 
         [Required(ErrorMessage = "Stock Name can't be null or empty")]
-        public string StockName {  get; set; }
+        public string StockName { get; set; }
 
         public DateTime DateAndTimeOfOrder { get; set; }
         public uint Quantity { get; set; }

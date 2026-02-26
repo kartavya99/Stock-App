@@ -2,9 +2,8 @@
 using ServiceContracts.DTO;
 using Services;
 using System;
-using System.Runtime.ConstrainedExecution;
 using Xunit;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace Tests
 {
@@ -16,7 +15,6 @@ namespace Tests
         {
             _stockService = new StockService();
         }
-
         #region CreateBuyOrder
 
         // StocksService.CreateBuyOrder():
@@ -114,7 +112,7 @@ namespace Tests
 
         // When you supply stock symbol=null (as per the specification, stock symbol can't be null),
         // it should throw ArgumentException.
-        [Fact]        
+        [Fact]
         public void CreateBuyOrder_StockSymbolIsNull_ToBeArgumentException()
         {
             //Arrange
@@ -179,7 +177,7 @@ namespace Tests
             {
                 //Act
                 _stockService.CreateSellOrder(sellOrderRequest);
-            } );
+            });
         }
 
         // When you supply sellOrderQuantity as 0 (as per the specification, minimum is 1), 
@@ -254,7 +252,7 @@ namespace Tests
         //When you supply stock symbol=null (as per the specification, stock symbol can't be null),
         //it should throw ArgumentException.
         [Fact]
-        
+
         public void CreateSellOrder_StockSymbolIsNull_ToBeArgumentExeption()
         {
             //Arrange
@@ -295,11 +293,107 @@ namespace Tests
             SellOrderRequest? sellorderRequest = new SellOrderRequest() { StockSymbol = "MFST", StockName = "Microsoft", DateAndTimeOfOrder = Convert.ToDateTime("2026-02-25"), Price = 1, Quantity = 1 };
 
             //Act
-           SellOrderResponse sellOrderResponseFromCreate = _stockService.CreateSellOrder(sellorderRequest);
+            SellOrderResponse sellOrderResponseFromCreate = _stockService.CreateSellOrder(sellorderRequest);
 
             //Assert
             Assert.NotEqual(Guid.Empty, sellOrderResponseFromCreate.SellOrderID);
         }
+        #endregion
+
+        #region GetBuyOrders
+
+        // StocksService.GetAllBuyOrders():
+        // When you invoke this method, by default, the returned list should be empty.
+
+        [Fact]
+        public void GetAllBuyOrders_DafualtList_ToBeEmpty()
+        {
+            //Act
+            List<BuyOrderResponse> buyOrdersFromGet = _stockService.GetBuyOrders();
+
+            //Assert
+            Assert.Empty(buyOrdersFromGet);
+        }
+
+
+        //When you first add few buy orders using CreateBuyOrder() method; and then invoke GetAllBuyOrders() method; 
+        //the returned list should contain all the same buy orders.
+
+        [Fact]
+        public void GetAllBuyOrders_WithFewBuyOrders_ToBeSuccessful()
+        {
+            //Arrange
+            BuyOrderRequest buyOrder_request1 = new BuyOrderRequest() { StockName = "MSFT", StockSymbol = "Microsoft", Price = 1, Quantity = 1, DateAndTimeOfOrder = DateTime.Parse("2026-02-26 06:00") };
+
+            BuyOrderRequest buyOrder_request2 = new BuyOrderRequest() { StockName = "MSFT", StockSymbol = "Microsoft", Price = 1, Quantity = 1, DateAndTimeOfOrder = DateTime.Parse("2026-02-26 06:00") };
+
+            List<BuyOrderRequest> buyOrder_requests = new List<BuyOrderRequest>() { buyOrder_request1, buyOrder_request2 };
+
+            List<BuyOrderResponse> buyOrder_response_list_from_add = new List<BuyOrderResponse>();
+
+            foreach (BuyOrderRequest buyOrder_request in buyOrder_requests )
+            {
+                BuyOrderResponse buyOrder_response = _stockService.CreateBuyOrder(buyOrder_request);
+                buyOrder_response_list_from_add.Add(buyOrder_response);
+            }
+
+            //Act
+            List<BuyOrderResponse> buyOrders_list_from_get = _stockService.GetBuyOrders();
+
+            //Assert
+            foreach(BuyOrderResponse buyOrder_list_from_add in buyOrder_response_list_from_add)
+            {
+                Assert.Contains(buyOrder_list_from_add, buyOrders_list_from_get);
+            }
+        }
+
+        #endregion
+
+        #region GetSellOrders
+
+        // StocksService.GetAllSellOrders():
+        // When you invoke this method, by default, the returned list should be empty.
+
+        [Fact]
+        public void GetAllSellOrders_DafualtList_ToBeEmpty()
+        {
+            //Act
+            List<SellOrderResponse> sellOrdersFromGet = _stockService.GetSellOrders();
+
+            //Assert
+            Assert.Empty(sellOrdersFromGet);
+        }
+
+        // When you first add few sell orders using CreateSellOrder() method; and then invoke GetAllSellOrders() method; the returned list should contain all the same sell orders. 
+
+        [Fact]
+        public void GetAllSellOrders_WithFewSellOrders_ToBeSuccessful()
+        {
+            //Arrange
+            SellOrderRequest sellOrder_request1 = new SellOrderRequest() { StockName = "MSFT", StockSymbol = "Microsoft", Price = 1, Quantity = 1, DateAndTimeOfOrder = DateTime.Parse("2026-02-26 06:00") };
+
+            SellOrderRequest sellOrder_request2 = new SellOrderRequest() { StockName = "MSFT", StockSymbol = "Microsoft", Price = 1, Quantity = 1, DateAndTimeOfOrder = DateTime.Parse("2026-02-26 06:00") };
+
+            List<SellOrderRequest> sellOrder_requests = new List<SellOrderRequest>() { sellOrder_request1, sellOrder_request2 };
+
+            List<SellOrderResponse> sellOrder_response_list_from_add = new List<SellOrderResponse>();
+
+            foreach (SellOrderRequest sellOrder_request in sellOrder_requests)
+            {
+                SellOrderResponse sellOrder_response = _stockService.CreateSellOrder(sellOrder_request);
+                sellOrder_response_list_from_add.Add(sellOrder_response);
+            }
+
+            //Act
+            List<SellOrderResponse> sellOrders_list_from_get = _stockService.GetSellOrders();
+
+            //Assert
+            foreach (SellOrderResponse sellOrder_list_from_add in sellOrder_response_list_from_add)
+            {
+                Assert.Contains(sellOrder_list_from_add, sellOrders_list_from_get);
+            }
+        }
+
         #endregion
 
     }

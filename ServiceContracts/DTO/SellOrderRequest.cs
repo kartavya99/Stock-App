@@ -10,7 +10,7 @@ namespace ServiceContracts.DTO
     /// DTO class that represents a sell order - that can be used while inserting / updating
     /// </summary>
     public class SellOrderRequest : IValidatableObject
-    {        
+    {
         [Required(ErrorMessage = "Stock Symbol can't be null or empty")]
         public string StockSymbol { get; set; }
 
