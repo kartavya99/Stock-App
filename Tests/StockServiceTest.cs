@@ -162,5 +162,146 @@ namespace Tests
         }
 
         #endregion
+
+        #region CreateSellOrder
+        //StocksService.CreateSellOrder():
+
+        // When you supply SellOrderRequest as null, it should throw ArgumentNullException.
+
+        [Fact]
+        public void CreateSellOrder_NullSellOrder_ToBeArgumentException()
+        {
+            //Arrange
+            SellOrderRequest? sellOrderRequest = null;
+
+            //Assert
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                //Act
+                _stockService.CreateSellOrder(sellOrderRequest);
+            } );
+        }
+
+        // When you supply sellOrderQuantity as 0 (as per the specification, minimum is 1), 
+        // it should throw ArgumentException.
+        [Theory]
+        [InlineData(0)]
+        public void CreateSellOrder_QuantityIsLessThanMinimum_ToBeArgumentExeption(uint sellOrderQuantity)
+        {
+            //Arrange
+            SellOrderRequest? sellorderRequest = new SellOrderRequest() { StockSymbol = "MFST", StockName = "Microsoft", Price = 1, Quantity = sellOrderQuantity };
+
+            //Assert
+            Assert.Throws<ArgumentException>(() =>
+            {
+                //Act
+                _stockService.CreateSellOrder(sellorderRequest);
+            });
+        }
+
+        // When you supply sellOrderQuantity as 100001 (as per the specification, maximum is 100000),
+        // it should throw ArgumentException.
+        [Theory]
+        [InlineData(100001)]
+        public void CreateSellOrder_QuantityIsGreaterThanMaximum_ToBeArgumentExeption(uint sellOrderQuantity)
+        {
+            //Arrange
+            SellOrderRequest? sellorderRequest = new SellOrderRequest() { StockSymbol = "MFST", StockName = "Microsoft", Price = 1, Quantity = sellOrderQuantity };
+
+            //Assert
+            Assert.Throws<ArgumentException>(() =>
+            {
+                //Act
+                _stockService.CreateSellOrder(sellorderRequest);
+            });
+        }
+
+        // When you supply sellOrderPrice as 0 (as per the specification, minimum is 1),
+        // it should throw ArgumentException.
+
+        [Theory]
+        [InlineData(0)]
+        public void CreateSellOrder_PriceIsLessThanMinimum_ToBeArgumentExeption(uint sellOrderPrice)
+        {
+            //Arrange
+            SellOrderRequest? sellorderRequest = new SellOrderRequest() { StockSymbol = "MFST", StockName = "Microsoft", Price = sellOrderPrice, Quantity = 1 };
+
+            //Assert
+            Assert.Throws<ArgumentException>(() =>
+            {
+                //Act
+                _stockService.CreateSellOrder(sellorderRequest);
+            });
+        }
+
+        //When you supply sellOrderPrice as 10001 (as per the specification, maximum is 10000),
+        //it should throw ArgumentException.
+        [Theory]
+        [InlineData(10001)]
+        public void CreateSellOrder_PriceIsGreaterThanMaximum_ToBeArgumentExeption(uint sellOrderPrice)
+        {
+            //Arrange
+            SellOrderRequest? sellorderRequest = new SellOrderRequest() { StockSymbol = "MFST", StockName = "Microsoft", Price = sellOrderPrice, Quantity = 1 };
+
+            //Assert
+            Assert.Throws<ArgumentException>(() =>
+            {
+                //Act
+                _stockService.CreateSellOrder(sellorderRequest);
+            });
+        }
+
+        //When you supply stock symbol=null (as per the specification, stock symbol can't be null),
+        //it should throw ArgumentException.
+        [Fact]
+        
+        public void CreateSellOrder_StockSymbolIsNull_ToBeArgumentExeption()
+        {
+            //Arrange
+            SellOrderRequest? sellorderRequest = new SellOrderRequest() { StockSymbol = null, Price = 1, Quantity = 1 };
+
+            //Assert
+            Assert.Throws<ArgumentException>(() =>
+            {
+                //Act
+                _stockService.CreateSellOrder(sellorderRequest);
+            });
+        }
+
+        // When you supply dateAndTimeOfOrder as "1999-12-31" (YYYY-MM-DD) - (as per the specification, it should be equal or newer date than 2000-01-01),
+        // it should throw ArgumentException.
+
+        [Fact]
+
+        public void CreateSellOrder_DateOfOrderIsLessThanYear2000_ToBeArgumentExeption()
+        {
+            //Arrange
+            SellOrderRequest? sellorderRequest = new SellOrderRequest() { StockSymbol = "MFST", StockName = "Microsoft", DateAndTimeOfOrder = Convert.ToDateTime("1999-12-31"), Price = 1, Quantity = 1 };
+
+            //Assert
+            Assert.Throws<ArgumentException>(() =>
+            {
+                //Act
+                _stockService.CreateSellOrder(sellorderRequest);
+            });
+        }
+
+
+        //If you supply all valid values, it should be successful and return an object of SellOrderResponse type with auto-generated SellOrderID (guid).
+        [Fact]
+        public void CreateSellOrder_ValidData_ToBeSuccessful()
+        {
+            //Arrange
+            SellOrderRequest? sellorderRequest = new SellOrderRequest() { StockSymbol = "MFST", StockName = "Microsoft", DateAndTimeOfOrder = Convert.ToDateTime("2026-02-25"), Price = 1, Quantity = 1 };
+
+            //Act
+           SellOrderResponse sellOrderResponseFromCreate = _stockService.CreateSellOrder(sellorderRequest);
+
+            //Assert
+            Assert.NotEqual(Guid.Empty, sellOrderResponseFromCreate.SellOrderID);
+        }
+        #endregion
+
     }
 }
+
