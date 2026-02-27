@@ -26,17 +26,17 @@ namespace StockApp.Controlers
         [Route("/")]
         [Route("[action]")]
         [Route("~/[controller]")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             //reset stock symbol if not exists
             if (string.IsNullOrEmpty(_tradingOptions.DefaultStockSymbol))
                 _tradingOptions.DefaultStockSymbol = "MSFT";
 
             //get company profile from API server
-            Dictionary<string, object>? companyProfileDictionary = _finnhubService.GetCompanyProfile(_tradingOptions.DefaultStockSymbol);
+            Dictionary<string, object>? companyProfileDictionary = await _finnhubService.GetCompanyProfile(_tradingOptions.DefaultStockSymbol);
 
             //get stock price quote from API server
-            Dictionary<string, object>? stockQuoteDictionary = _finnhubService.GetSotckPriceQuote(_tradingOptions.DefaultStockSymbol);
+            Dictionary<string, object>? stockQuoteDictionary = await _finnhubService.GetSotckPriceQuote(_tradingOptions.DefaultStockSymbol);
 
             //create model object
             StockTrade stockTrade = new StockTrade() { StockSymbol = _tradingOptions.DefaultStockSymbol };
@@ -60,7 +60,7 @@ namespace StockApp.Controlers
 
         [Route("[action]")]
         [HttpPost]
-        public IActionResult BuyOrder(BuyOrderRequest buyOrderRequest)
+        public async Task<IActionResult> BuyOrder(BuyOrderRequest buyOrderRequest)
         {
             //update date of order
             buyOrderRequest.DateAndTimeOfOrder = DateTime.Now;
@@ -77,7 +77,7 @@ namespace StockApp.Controlers
             }
 
             //invoke servie method
-            BuyOrderResponse buyOrderResponse = _stocksService.CreateBuyOrder(buyOrderRequest);
+            BuyOrderResponse buyOrderResponse = await _stocksService.CreateBuyOrder(buyOrderRequest);
 
             return RedirectToAction(nameof(Orders));
 
@@ -85,7 +85,7 @@ namespace StockApp.Controlers
 
         [Route("[action]")]
         [HttpPost]
-        public IActionResult SellOrder(SellOrderRequest sellOrderRequest)
+        public async Task<IActionResult> SellOrder(SellOrderRequest sellOrderRequest)
         {
             //update date of order
             sellOrderRequest.DateAndTimeOfOrder = DateTime.Now;
@@ -102,21 +102,23 @@ namespace StockApp.Controlers
             }
 
             //invoke servie method
-            SellOrderResponse sellOrderResponse = _stocksService.CreateSellOrder(sellOrderRequest);
+            SellOrderResponse sellOrderResponse = await _stocksService.CreateSellOrder(sellOrderRequest);
 
             return RedirectToAction(nameof(Orders));
 
         }
 
         [Route("[action]")]
-        public IActionResult Orders()
+        public async Task<IActionResult> Orders()
         {
             //invoke service methods
-            List<BuyOrderResponse> buyOrderResponses = _stocksService.GetBuyOrders();
-            List<SellOrderResponse> sellOrderResponses = _stocksService.GetSellOrders();
+            List<BuyOrderResponse> buyOrderResponses = await _stocksService.GetBuyOrders();
+            List<SellOrderResponse> sellOrderResponses = await _stocksService.GetSellOrders();
 
             // crate model object
             Orders order = new Orders() { BuyOrders = buyOrderResponses, SellOrders = sellOrderResponses };
+
+            ViewBag.TradingOptions = _tradingOptions;
 
             return View(order);
         }
