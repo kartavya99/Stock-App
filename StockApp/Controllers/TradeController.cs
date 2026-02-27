@@ -82,5 +82,43 @@ namespace StockApp.Controlers
             return RedirectToAction(nameof(Orders));
 
         }
+
+        [Route("[action]")]
+        [HttpPost]
+        public IActionResult SellOrder(SellOrderRequest sellOrderRequest)
+        {
+            //update date of order
+            sellOrderRequest.DateAndTimeOfOrder = DateTime.Now;
+
+            //re-validate the model object after updating the date
+            ModelState.Clear();
+            TryValidateModel(sellOrderRequest);
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                StockTrade stockTrade = new StockTrade() { StockName = sellOrderRequest.StockName, Quantity = sellOrderRequest.Quantity, StockSymbol = sellOrderRequest.StockSymbol };
+                return View("Index", stockTrade);
+            }
+
+            //invoke servie method
+            SellOrderResponse sellOrderResponse = _stocksService.CreateSellOrder(sellOrderRequest);
+
+            return RedirectToAction(nameof(Orders));
+
+        }
+
+        [Route("[action]")]
+        public IActionResult Orders()
+        {
+            //invoke service methods
+            List<BuyOrderResponse> buyOrderResponses = _stocksService.GetBuyOrders();
+            List<SellOrderResponse> sellOrderResponses = _stocksService.GetSellOrders();
+
+            // crate model object
+            Orders order = new Orders() { BuyOrders = buyOrderResponses, SellOrders = sellOrderResponses };
+
+            return View(order);
+        }
     }
 }

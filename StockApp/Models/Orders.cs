@@ -7,8 +7,8 @@ namespace StockApp.Models
     /// </summary>
     public class Orders
     {
-        public List<BuyOrderResponse> buyOrders { get; set; } = new List<BuyOrderResponse>();
+        public List<BuyOrderResponse> BuyOrders { get; set; } = new List<BuyOrderResponse>();
 
-        public List<SellOrderResponse> sellOrders { get; set; } = new List<SellOrderResponse>();
+        public List<SellOrderResponse> SellOrders { get; set; } = new List<SellOrderResponse>();
     }
 }
