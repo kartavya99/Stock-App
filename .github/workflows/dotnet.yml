@@ -16,13 +16,28 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+
     - name: Restore dependencies
       run: dotnet restore
+
     - name: Build
       run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+
+    - name: Run tests and generate results
+      run: dotnet test --no-build --logger "trx;LogFileName=test_results.trx"
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: TestResults
+        path: '**/test_results.trx'
+
+    - name: Publish test results to GitHub
+      uses: microsoft/test-report@v2
+      with:
+        test-results-files: '**/test_results.trx'
