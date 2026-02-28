@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Xunit;
 
 
-namespace Tests
+namespace Tests.ServiceTests
 {
     public class StockServiceTest
     {
