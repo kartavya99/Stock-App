@@ -1,11 +1,11 @@
-﻿namespace ServiceContracts
+﻿namespace RepositoryContracts
 {
     /// <summary>
-    /// Represents a service that makes HTTP requests to finnhub.io
+    /// Represents a repository that makes HTTP requestes to finnhub.io
     /// </summary>
-    public interface IFinnhubService
+    public interface IFinnhubRepository
     {
-        /// <summary>
+        // <summary>
         /// Returns company details such as company country, currency, exchange, IPO date, logo image, etc.
         /// </summary>
         /// <param name="stockSymbol">Stock symbol to search</param>
@@ -20,17 +20,17 @@
         Task<Dictionary<string, object>?> GetSotckPriceQuote(string stockSymbol);
 
         /// <summary>
-        /// Returns list of all stocks supported by an exchange (default: US)
+        /// Returns list of all stocks supported by an exchange (defualt: US)
         /// </summary>
-        /// <returns>List of stocks</returns>
-        Task<List<Dictionary<string, string>>?> GetStocks();
-
+        /// <returns></returns>
+        Task<List<Dictionary<string, string>>>GetStocks();
 
         /// <summary>
         /// Returns list of matching stocks based on the given stock symbol
         /// </summary>
-        /// <param name="stockSymbolToSearch">Stock symbol to search</param>
+        /// <param name="stockSymbolToSearch"></param>
         /// <returns>List of matching stocks</returns>
-        Task<Dictionary<string, object>?> SearchStocks(string stockSymbolToSearch);
+        Task<Dictionary<string, object>?>SearchStocks(string stockSymbolToSearch);
+
     }
 }
