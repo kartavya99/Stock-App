@@ -1,5 +1,7 @@
 using Entities;
 using Microsoft.EntityFrameworkCore;
+using Repositories;
+using RepositoryContracts;
 using ServiceContracts;
 using Services;
 using StockApp;
@@ -11,8 +13,10 @@ builder.Services.AddControllersWithViews();
 builder.Services.Configure<TradingOptions>(builder.Configuration.GetSection("TreadingOptions"));
 builder.Services.AddTransient<IFinnhubService, FinnhubService>();
 builder.Services.AddTransient<IStocksService, StockService>();
+builder.Services.AddTransient<IStockRepository,StocksRepository>();
+builder.Services.AddTransient<IFinnhubRepository, FinnhubRepository>();
 
-builder.Services.AddDbContext<StockMarketDbContext>(options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });

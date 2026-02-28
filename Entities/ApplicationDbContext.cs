@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Entities
 {
-    public class StockMarketDbContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
-        public StockMarketDbContext(DbContextOptions options) : base(options)
+        public ApplicationDbContext(DbContextOptions options) : base(options)
         {
 
         }
