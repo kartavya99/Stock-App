@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Rotativa.AspNetCore;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using StockApp.Models;
+using System.Collections.Generic;
 
 namespace StockApp.Controlers
 {
@@ -48,6 +50,7 @@ namespace StockApp.Controlers
                 {
                     StockSymbol = Convert.ToString(companyProfileDictionary["ticker"]),
                     StockName = Convert.ToString(companyProfileDictionary["name"]),
+                    Quantity = _tradingOptions.DefaultOrderQuantity ?? 0,
                     Price = Convert.ToDouble(stockQuoteDictionary["c"].ToString()),                    
                 };
             }
@@ -121,6 +124,23 @@ namespace StockApp.Controlers
             ViewBag.TradingOptions = _tradingOptions;
 
             return View(order);
+        }
+
+        [Route("OrdersPDF")]
+        public async Task<IActionResult> OrdersPDF()
+        {
+            List<IOrderResponse> orders = new List<IOrderResponse>();
+            orders.AddRange(await _stocksService.GetBuyOrders());
+            orders.AddRange(await _stocksService.GetSellOrders());
+            orders = orders.OrderByDescending(temp => temp.DateAndTimeOfOrder).ToList();
+
+            ViewBag.TradingOptions = _tradingOptions;
+
+            return new ViewAsPdf("OrdersPDF", orders, ViewData)
+            {
+                PageMargins = new Rotativa.AspNetCore.Options.Margins() { Top = 20, Right = 20, Bottom = 20, Left = 20 },
+                PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape
+            };
         }
     }
 }

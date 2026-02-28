@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ServiceContracts.DTO
 {
-    internal class IOrderResponse
+    public interface IOrderResponse
     {
         string StockSymbol { get; set; }
         string StockName { get; set; }

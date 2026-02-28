@@ -9,8 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 //Services
 builder.Services.AddControllersWithViews();
 builder.Services.Configure<TradingOptions>(builder.Configuration.GetSection("TreadingOptions"));
-builder.Services.AddSingleton<IFinnhubService, FinnhubService>();
-builder.Services.AddSingleton<IStocksService, StockService>();
+builder.Services.AddTransient<IFinnhubService, FinnhubService>();
+builder.Services.AddTransient<IStocksService, StockService>();
 
 builder.Services.AddDbContext<StockMarketDbContext>(options =>
 {
@@ -27,6 +27,8 @@ if (builder.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
+
+Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
 
 
 app.UseStaticFiles();
