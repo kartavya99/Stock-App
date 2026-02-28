@@ -35,7 +35,7 @@ namespace Services
             buyOrder.BuyOrderID = Guid.NewGuid();
 
             //add buy order object to buy orders list
-            BuyOrder buyOrderFromRepo = await _stockRepostiory.CreateOrder(buyOrder);
+            BuyOrder buyOrderFromRepo = await _stockRepostiory.CreateBuyOrder(buyOrder);
 
             //convert the BuyOrder object into BuyOrderResponse type
             return buyOrder.ToBuyOrderResponse();

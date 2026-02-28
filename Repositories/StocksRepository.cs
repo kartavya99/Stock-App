@@ -15,7 +15,7 @@ namespace Repositories
         {
             _db = db;
         }
-        public async Task<BuyOrder> CreateOrder(BuyOrder buyOrder)
+        public async Task<BuyOrder> CreateBuyOrder(BuyOrder buyOrder)
         {
             _db.BuyOrders.Add(buyOrder);
             await _db.SaveChangesAsync();

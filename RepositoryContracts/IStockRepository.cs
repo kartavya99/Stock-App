@@ -12,7 +12,7 @@ namespace RepositoryContracts
         /// </summary>
         /// <param name="buyOrder">Buy order object</param>        
         /// <returns>Buy Order object</returns>
-        Task<BuyOrder> CreateOrder(BuyOrder buyOrder);
+        Task<BuyOrder> CreateBuyOrder(BuyOrder buyOrder);
 
         /// <summary>
         /// Creates a sell order
