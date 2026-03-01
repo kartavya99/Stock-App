@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 //Services
 builder.Services.AddControllersWithViews();
-builder.Services.Configure<TradingOptions>(builder.Configuration.GetSection("TreadingOptions"));
+builder.Services.Configure<TradingOptions>(builder.Configuration.GetSection("TradingOptions"));
 builder.Services.AddTransient<IFinnhubService, FinnhubService>();
 builder.Services.AddTransient<IStocksService, StockService>();
 builder.Services.AddTransient<IStockRepository,StocksRepository>();
