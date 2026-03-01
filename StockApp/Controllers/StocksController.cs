@@ -25,8 +25,8 @@ namespace StockApp.Controllers
 
 
         [Route("/")]
-        [Route("[action]/{stocks?}")]
-        [Route("~/[action]/{stocks?}")]
+        [Route("[action]/{stock?}")]
+        [Route("~/[action]/{stock?}")]
         public async Task <IActionResult> Explore(string? stock, bool showAll = false)
         {
             //get company profile from API server
@@ -49,7 +49,11 @@ namespace StockApp.Controllers
                 }
 
                 //covert dictionary objects into Stock objects
-                stocks = stocksDictionary.Select(temp => new Stock() { StockName = Convert.ToString(temp["description"]), StockSymbol = Convert.ToString(temp["symbol"]) })
+                stocks = stocksDictionary
+                    .Select(temp => new Stock() 
+                    { 
+                        StockName = Convert.ToString(temp["description"]), 
+                        StockSymbol = Convert.ToString(temp["symbol"]) })
                     .ToList();
             }
 

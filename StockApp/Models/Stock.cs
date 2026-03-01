@@ -14,6 +14,6 @@ namespace StockApp.Models
 
             Stock other = (Stock)obj;
             return StockSymbol == other.StockSymbol && StockName == other.StockName;
-        }
+        }       
     }
 }
