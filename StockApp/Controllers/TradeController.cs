@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Rotativa.AspNetCore;
 using ServiceContracts;
 using ServiceContracts.DTO;
+using StockApp.Filters.ActionFilters;
 using StockApp.Models;
 using System.Collections.Generic;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace StockApp.Controlers
 {
@@ -62,24 +66,11 @@ namespace StockApp.Controlers
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<IActionResult> BuyOrder(BuyOrderRequest buyOrderRequest)
+        [TypeFilter(typeof(CreateOrderActionFilter))]
+        public async Task<IActionResult> BuyOrder(BuyOrderRequest orderRequest)
         {
-            //update date of order
-            buyOrderRequest.DateAndTimeOfOrder = DateTime.Now;
-
-            //re-validate the model object after updating the date
-            ModelState.Clear();
-            TryValidateModel(buyOrderRequest);
-
-            if (!ModelState.IsValid)
-            {
-                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-                StockTrade stockTrade = new StockTrade() { StockName = buyOrderRequest.StockName, Quantity = buyOrderRequest.Quantity, StockSymbol = buyOrderRequest.StockSymbol };
-                return View("Index", stockTrade);
-            }
-
             //invoke servie method
-            BuyOrderResponse buyOrderResponse = await _stocksService.CreateBuyOrder(buyOrderRequest);
+            BuyOrderResponse buyOrderResponse = await _stocksService.CreateBuyOrder(orderRequest);
 
             return RedirectToAction(nameof(Orders));
 
@@ -87,24 +78,12 @@ namespace StockApp.Controlers
 
         [Route("[action]")]
         [HttpPost]
-        public async Task<IActionResult> SellOrder(SellOrderRequest sellOrderRequest)
+        [TypeFilter(typeof(CreateOrderActionFilter))]
+        public async Task<IActionResult> SellOrder(SellOrderRequest orderRequest)
         {
-            //update date of order
-            sellOrderRequest.DateAndTimeOfOrder = DateTime.Now;
-
-            //re-validate the model object after updating the date
-            ModelState.Clear();
-            TryValidateModel(sellOrderRequest);
-
-            if (!ModelState.IsValid)
-            {
-                ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-                StockTrade stockTrade = new StockTrade() { StockName = sellOrderRequest.StockName, Quantity = sellOrderRequest.Quantity, StockSymbol = sellOrderRequest.StockSymbol };
-                return View("Index", stockTrade);
-            }
-
+            Console.WriteLine(orderRequest.DateAndTimeOfOrder);
             //invoke servie method
-            SellOrderResponse sellOrderResponse = await _stocksService.CreateSellOrder(sellOrderRequest);
+            SellOrderResponse sellOrderResponse = await _stocksService.CreateSellOrder(orderRequest);
 
             return RedirectToAction(nameof(Orders));
 
