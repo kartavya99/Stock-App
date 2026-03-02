@@ -81,7 +81,6 @@ namespace StockApp.Controlers
         [TypeFilter(typeof(CreateOrderActionFilter))]
         public async Task<IActionResult> SellOrder(SellOrderRequest orderRequest)
         {
-            Console.WriteLine(orderRequest.DateAndTimeOfOrder);
             //invoke servie method
             SellOrderResponse sellOrderResponse = await _stocksService.CreateSellOrder(orderRequest);
 

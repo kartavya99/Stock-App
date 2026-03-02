@@ -5,6 +5,7 @@ using RepositoryContracts;
 using ServiceContracts;
 using Services;
 using StockApp;
+using StockApp.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,9 +32,14 @@ if (builder.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
+else
+{
+    app.UseExceptionHandler("/Error");
+    app.UseMiddleware<ExcpetionHandlingMiddleware>();
+}
 
-if(builder.Environment.IsEnvironment("Test") == false)
-Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
+if (builder.Environment.IsEnvironment("Test") == false)
+    Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
 
 
 app.UseStaticFiles();
