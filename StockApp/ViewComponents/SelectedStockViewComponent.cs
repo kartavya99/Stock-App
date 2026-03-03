@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using ServiceContracts;
 using ServiceContracts.FinnhubService;
+using ServiceContracts.StocksService;
 
 namespace StockApp.ViewComponents
 {
@@ -10,10 +11,10 @@ namespace StockApp.ViewComponents
         private readonly TradingOptions _tradingOptions;
         private readonly IFinnhubCompanyProfileService _finnhubCompanyProfileService;
         private readonly IFinnhubStockPriceQuoteSerivce _finnhubStockPriceQuoteSerivce;
-        private readonly IStocksService _stockService;        
+        private readonly IBuyOrderService _stockService;        
         private readonly IConfiguration _configuration;
 
-        public SelectedStockViewComponent(IOptions<TradingOptions> tradinOptions, IStocksService stockService, IFinnhubCompanyProfileService finnhubCompanyProfileService, IFinnhubStockPriceQuoteSerivce finnhubStockPriceQuoteSerivce, IConfiguration configuration)
+        public SelectedStockViewComponent(IOptions<TradingOptions> tradinOptions, IBuyOrderService stockService, IFinnhubCompanyProfileService finnhubCompanyProfileService, IFinnhubStockPriceQuoteSerivce finnhubStockPriceQuoteSerivce, IConfiguration configuration)
         {
             _tradingOptions = tradinOptions.Value;
             _stockService = stockService;

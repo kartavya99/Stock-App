@@ -5,6 +5,7 @@ using Rotativa.AspNetCore;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.FinnhubService;
+using ServiceContracts.StocksService;
 using StockApp.Filters.ActionFilters;
 using StockApp.Models;
 using System.Collections.Generic;
@@ -19,16 +20,18 @@ namespace StockApp.Controlers
         private readonly IFinnhubCompanyProfileService _finnhubCompanyProfileService;
         private readonly IFinnhubSotckService _finnhubSotckService;
         private readonly IFinnhubStockPriceQuoteSerivce _finnhubStockPriceQuoteSerivce;
-        private readonly IStocksService _stocksService;
+        private readonly IBuyOrderService _buyOrderService;
+        private readonly ISellOrderService _sellOrderService;
         private readonly IConfiguration _configuration;
 
-        public TradeController(IOptions<TradingOptions> tradingOptions, IStocksService stockService, IFinnhubCompanyProfileService finnhubCompanyProfileService, IFinnhubSotckService finnhubSotckService, IFinnhubStockPriceQuoteSerivce finnhubStockPriceQuoteSerivce, IConfiguration configuration )
+        public TradeController(IOptions<TradingOptions> tradingOptions, IBuyOrderService buyOrderService, ISellOrderService sellOrderService, IFinnhubCompanyProfileService finnhubCompanyProfileService, IFinnhubSotckService finnhubSotckService, IFinnhubStockPriceQuoteSerivce finnhubStockPriceQuoteSerivce, IConfiguration configuration )
         {
             _tradingOptions = tradingOptions.Value;
             _finnhubCompanyProfileService = finnhubCompanyProfileService;
             _finnhubSotckService = finnhubSotckService;
             _finnhubStockPriceQuoteSerivce = finnhubStockPriceQuoteSerivce;
-            _stocksService = stockService;
+            _buyOrderService = buyOrderService;
+            _sellOrderService = sellOrderService;
             _configuration = configuration;
         }
 
@@ -74,7 +77,7 @@ namespace StockApp.Controlers
         public async Task<IActionResult> BuyOrder(BuyOrderRequest orderRequest)
         {
             //invoke servie method
-            BuyOrderResponse buyOrderResponse = await _stocksService.CreateBuyOrder(orderRequest);
+            BuyOrderResponse buyOrderResponse = await _buyOrderService.CreateBuyOrder(orderRequest);
 
             return RedirectToAction(nameof(Orders));
 
@@ -86,7 +89,7 @@ namespace StockApp.Controlers
         public async Task<IActionResult> SellOrder(SellOrderRequest orderRequest)
         {
             //invoke servie method
-            SellOrderResponse sellOrderResponse = await _stocksService.CreateSellOrder(orderRequest);
+            SellOrderResponse sellOrderResponse = await _sellOrderService.CreateSellOrder(orderRequest);
 
             return RedirectToAction(nameof(Orders));
 
@@ -96,8 +99,8 @@ namespace StockApp.Controlers
         public async Task<IActionResult> Orders()
         {
             //invoke service methods
-            List<BuyOrderResponse> buyOrderResponses = await _stocksService.GetBuyOrders();
-            List<SellOrderResponse> sellOrderResponses = await _stocksService.GetSellOrders();
+            List<BuyOrderResponse> buyOrderResponses = await _buyOrderService.GetBuyOrders();
+            List<SellOrderResponse> sellOrderResponses = await _sellOrderService.GetSellOrders();
 
             // crate model object
             Orders order = new Orders() { BuyOrders = buyOrderResponses, SellOrders = sellOrderResponses };
@@ -111,8 +114,8 @@ namespace StockApp.Controlers
         public async Task<IActionResult> OrdersPDF()
         {
             List<IOrderResponse> orders = new List<IOrderResponse>();
-            orders.AddRange(await _stocksService.GetBuyOrders());
-            orders.AddRange(await _stocksService.GetSellOrders());
+            orders.AddRange(await _buyOrderService.GetBuyOrders());
+            orders.AddRange(await _sellOrderService.GetSellOrders());
             orders = orders.OrderByDescending(temp => temp.DateAndTimeOfOrder).ToList();
 
             ViewBag.TradingOptions = _tradingOptions;

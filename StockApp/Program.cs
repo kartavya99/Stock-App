@@ -4,8 +4,9 @@ using Repositories;
 using RepositoryContracts;
 using ServiceContracts;
 using ServiceContracts.FinnhubService;
-using Services;
+using ServiceContracts.StocksService;
 using Services.FinnhubService;
+using Services.StockService;
 using StockApp;
 using StockApp.Middleware;
 
@@ -14,11 +15,12 @@ var builder = WebApplication.CreateBuilder(args);
 //Services
 builder.Services.AddControllersWithViews();
 builder.Services.Configure<TradingOptions>(builder.Configuration.GetSection("TradingOptions"));
+builder.Services.AddTransient<IBuyOrderService, StockBuyOrdersService>();
+builder.Services.AddTransient<ISellOrderService, StockSellOrdersService>();
 builder.Services.AddTransient<IFinnhubCompanyProfileService, FinnhubCompanyProfileService>();
 builder.Services.AddTransient<IFinnhubStockPriceQuoteSerivce, FinnhunStockPriceQuoteService>();
 builder.Services.AddTransient<IFinnhubSotckService, FinnhubStocksService>();
 builder.Services.AddTransient<IFinnhubSearchStocksService, FinnhubSearchStocksService>();
-builder.Services.AddTransient<IStocksService, StockService>();
 builder.Services.AddTransient<IStockRepository,StocksRepository>();
 builder.Services.AddTransient<IFinnhubRepository, FinnhubRepository>();
 
