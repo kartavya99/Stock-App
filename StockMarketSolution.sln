@@ -11,13 +11,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Servic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{51850D24-FF43-4A1E-BF3D-04B2A162158C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{1BFCB8BB-5656-4E39-AB82-BADCC88644C4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryContracts", "RepositoryContracts\RepositoryContracts.csproj", "{60471950-189A-444F-9086-5BA0C7D819C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "Repositories\Repositories.csproj", "{A3DC2639-8C05-45C4-A4E2-869D0FCC2782}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exceptions", "Exceptions\Exceptions.csproj", "{A7FF65C2-7B0F-4763-AB09-2685D48B1E1E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stocks.Controller.Tests", "Stocks.Controller.Tests\Stocks.Controller.Tests.csproj", "{52C1F12E-917F-4F37-B97A-12D6DCA1B6FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stocks.Integration.Tests", "Stocks.Integration.Tests\Stocks.Integration.Tests.csproj", "{783C4CD4-80A0-4E2D-A0E8-B6F247CB6BF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stocks.Services.Tests", "Stocks.Services.Tests\Stocks.Services.Tests.csproj", "{330E483C-7636-4B60-80BB-AFB3C03247A2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B9694D66-9979-4572-9AF1-5E4301B0E83C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stocks.Web", "Stocks.Web\Stocks.Web.csproj", "{76343E87-E69B-4E41-A021-13522167768A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stocks.Core", "Stocks.Core\Stocks.Core.csproj", "{B0462CFB-0C9C-4C3B-94D7-BF52713CDE22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stocks.Infrastructure", "Stocks.Infrastructure\Stocks.Infrastructure.csproj", "{068BFDC8-CF0D-42B4-A0DE-97C1B47E3B80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +55,6 @@ Global
 		{51850D24-FF43-4A1E-BF3D-04B2A162158C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51850D24-FF43-4A1E-BF3D-04B2A162158C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51850D24-FF43-4A1E-BF3D-04B2A162158C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1BFCB8BB-5656-4E39-AB82-BADCC88644C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1BFCB8BB-5656-4E39-AB82-BADCC88644C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1BFCB8BB-5656-4E39-AB82-BADCC88644C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1BFCB8BB-5656-4E39-AB82-BADCC88644C4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{60471950-189A-444F-9086-5BA0C7D819C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{60471950-189A-444F-9086-5BA0C7D819C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60471950-189A-444F-9086-5BA0C7D819C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,9 +67,41 @@ Global
 		{A7FF65C2-7B0F-4763-AB09-2685D48B1E1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7FF65C2-7B0F-4763-AB09-2685D48B1E1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7FF65C2-7B0F-4763-AB09-2685D48B1E1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52C1F12E-917F-4F37-B97A-12D6DCA1B6FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52C1F12E-917F-4F37-B97A-12D6DCA1B6FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52C1F12E-917F-4F37-B97A-12D6DCA1B6FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52C1F12E-917F-4F37-B97A-12D6DCA1B6FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{783C4CD4-80A0-4E2D-A0E8-B6F247CB6BF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{783C4CD4-80A0-4E2D-A0E8-B6F247CB6BF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{783C4CD4-80A0-4E2D-A0E8-B6F247CB6BF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{783C4CD4-80A0-4E2D-A0E8-B6F247CB6BF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{330E483C-7636-4B60-80BB-AFB3C03247A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{330E483C-7636-4B60-80BB-AFB3C03247A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{330E483C-7636-4B60-80BB-AFB3C03247A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{330E483C-7636-4B60-80BB-AFB3C03247A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76343E87-E69B-4E41-A021-13522167768A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76343E87-E69B-4E41-A021-13522167768A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76343E87-E69B-4E41-A021-13522167768A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76343E87-E69B-4E41-A021-13522167768A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0462CFB-0C9C-4C3B-94D7-BF52713CDE22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0462CFB-0C9C-4C3B-94D7-BF52713CDE22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0462CFB-0C9C-4C3B-94D7-BF52713CDE22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0462CFB-0C9C-4C3B-94D7-BF52713CDE22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{068BFDC8-CF0D-42B4-A0DE-97C1B47E3B80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{068BFDC8-CF0D-42B4-A0DE-97C1B47E3B80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{068BFDC8-CF0D-42B4-A0DE-97C1B47E3B80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{068BFDC8-CF0D-42B4-A0DE-97C1B47E3B80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{52C1F12E-917F-4F37-B97A-12D6DCA1B6FF} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{783C4CD4-80A0-4E2D-A0E8-B6F247CB6BF1} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{330E483C-7636-4B60-80BB-AFB3C03247A2} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{76343E87-E69B-4E41-A021-13522167768A} = {B9694D66-9979-4572-9AF1-5E4301B0E83C}
+		{B0462CFB-0C9C-4C3B-94D7-BF52713CDE22} = {B9694D66-9979-4572-9AF1-5E4301B0E83C}
+		{068BFDC8-CF0D-42B4-A0DE-97C1B47E3B80} = {B9694D66-9979-4572-9AF1-5E4301B0E83C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {15ADAC1B-47CB-410B-A662-1CFA2DC0CEC6}

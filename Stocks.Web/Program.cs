@@ -21,7 +21,7 @@ builder.Services.AddTransient<IFinnhubCompanyProfileService, FinnhubCompanyProfi
 builder.Services.AddTransient<IFinnhubStockPriceQuoteSerivce, FinnhunStockPriceQuoteService>();
 builder.Services.AddTransient<IFinnhubSotckService, FinnhubStocksService>();
 builder.Services.AddTransient<IFinnhubSearchStocksService, FinnhubSearchStocksService>();
-builder.Services.AddTransient<IStockRepository,StocksRepository>();
+builder.Services.AddTransient<IStockRepository, StocksRepository>();
 builder.Services.AddTransient<IFinnhubRepository, FinnhubRepository>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

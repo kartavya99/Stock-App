@@ -1,35 +1,35 @@
 ﻿using Exceptions;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Http;
 using RepositoryContracts;
-using ServiceContracts;
 using ServiceContracts.FinnhubService;
 using System.Text.Json;
 
 namespace Services.FinnhubService
 {
-    public class FinnhunStockPriceQuoteService : IFinnhubStockPriceQuoteSerivce
+    public class FinnhubCompanyProfileService : IFinnhubCompanyProfileService
     {
         private readonly IFinnhubRepository _finnhubRepository;
 
-        public FinnhunStockPriceQuoteService(IFinnhubRepository finnhubRepository)
+        public FinnhubCompanyProfileService(IFinnhubRepository finnhubRepository)
         {
             _finnhubRepository = finnhubRepository;
         }
 
-        public async Task<Dictionary<string, object>?> GetSotckPriceQuote(string stockSymbol)
+
+        public async Task<Dictionary<string, object>?> GetCompanyProfile(string stockSymbol)
         {
             try
             {
-                Dictionary<string, object>? responseDictionary = await _finnhubRepository.GetSotckPriceQuote(stockSymbol);
+                Dictionary<string, object>? responseDictionary = await _finnhubRepository.GetCompanyProfile(stockSymbol);
                 return responseDictionary;
-            } 
-            catch (Exception ex)
+            }
+            catch(Exception ex)
             {
                 FinnhubException finnhubExeption = new FinnhubException("Unable to connect to finnhub", ex);
                 throw finnhubExeption;
             }
-        }        
+            
+        }       
     }
 }
 
