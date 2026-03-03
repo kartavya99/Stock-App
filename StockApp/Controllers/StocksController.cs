@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using ServiceContracts;
+using ServiceContracts.FinnhubService;
 using StockApp.Models;
 
 namespace StockApp.Controllers
@@ -9,7 +9,7 @@ namespace StockApp.Controllers
     public class StocksController : Controller
     {
 
-        private readonly IFinnhubService _fiinhubService;
+        private readonly IFinnhubSotckService _finnhubSotckService;
         private readonly TradingOptions _tradingOptions;
 
         /// <summary>
@@ -17,10 +17,10 @@ namespace StockApp.Controllers
         /// </summary>
         /// <param name="tradingOptions">Injecting TradeOptions config through Options pattern</param>
         /// <param name="finnhubService">Injecting FinnhubService</param>
-        public StocksController(IOptions<TradingOptions> tradingOptions, IFinnhubService finnhubService)
+        public StocksController(IOptions<TradingOptions> tradingOptions, IFinnhubSotckService finnhubSotckService)
         {
             _tradingOptions = tradingOptions.Value;
-            _fiinhubService = finnhubService;
+            _finnhubSotckService = finnhubSotckService;
         }
 
 
@@ -30,7 +30,7 @@ namespace StockApp.Controllers
         public async Task<IActionResult> Explore(string? stock, bool showAll = false)
         {
             //get company profile from API server
-            List<Dictionary<string, string>>? stocksDictionary = await _fiinhubService.GetStocks();
+            List<Dictionary<string, string>>? stocksDictionary = await _finnhubSotckService.GetStocks();
 
             List<Stock> stocks = new List<Stock>();
 

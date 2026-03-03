@@ -1,21 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ServiceContracts;
+using ServiceContracts.FinnhubService;
 
 namespace StockApp.ViewComponents
 {
     public class SelectedStockViewComponent : ViewComponent
     {
         private readonly TradingOptions _tradingOptions;
-        private readonly IStocksService _stockService;
-        private readonly IFinnhubService _finnhubService;
+        private readonly IFinnhubCompanyProfileService _finnhubCompanyProfileService;
+        private readonly IFinnhubStockPriceQuoteSerivce _finnhubStockPriceQuoteSerivce;
+        private readonly IStocksService _stockService;        
         private readonly IConfiguration _configuration;
 
-        public SelectedStockViewComponent(IOptions<TradingOptions> tradinOptions, IStocksService stockService, IFinnhubService finnhubService, IConfiguration configuration)
+        public SelectedStockViewComponent(IOptions<TradingOptions> tradinOptions, IStocksService stockService, IFinnhubCompanyProfileService finnhubCompanyProfileService, IFinnhubStockPriceQuoteSerivce finnhubStockPriceQuoteSerivce, IConfiguration configuration)
         {
             _tradingOptions = tradinOptions.Value;
             _stockService = stockService;
-            _finnhubService = finnhubService;
+            _finnhubCompanyProfileService = finnhubCompanyProfileService;
+            _finnhubStockPriceQuoteSerivce = finnhubStockPriceQuoteSerivce;
             _configuration = configuration;
         }
             
@@ -25,8 +28,8 @@ namespace StockApp.ViewComponents
 
             if(stockSymbol != null)
             {
-                companyProfileDict = await _finnhubService.GetCompanyProfile(stockSymbol);
-                var stockPriceDict = await _finnhubService.GetSotckPriceQuote(stockSymbol);
+                companyProfileDict = await _finnhubCompanyProfileService.GetCompanyProfile(stockSymbol);
+                var stockPriceDict = await _finnhubStockPriceQuoteSerivce.GetSotckPriceQuote(stockSymbol);
                 if( stockPriceDict != null && companyProfileDict != null)
                 {
                     companyProfileDict.Add("price", stockPriceDict["c"]);

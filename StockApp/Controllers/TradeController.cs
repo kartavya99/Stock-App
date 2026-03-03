@@ -4,11 +4,11 @@ using Microsoft.Extensions.Options;
 using Rotativa.AspNetCore;
 using ServiceContracts;
 using ServiceContracts.DTO;
+using ServiceContracts.FinnhubService;
 using StockApp.Filters.ActionFilters;
 using StockApp.Models;
 using System.Collections.Generic;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace StockApp.Controlers
 {
@@ -16,14 +16,18 @@ namespace StockApp.Controlers
     public class TradeController : Controller
     {
         private readonly TradingOptions _tradingOptions;
-        private readonly IFinnhubService _finnhubService;
+        private readonly IFinnhubCompanyProfileService _finnhubCompanyProfileService;
+        private readonly IFinnhubSotckService _finnhubSotckService;
+        private readonly IFinnhubStockPriceQuoteSerivce _finnhubStockPriceQuoteSerivce;
         private readonly IStocksService _stocksService;
         private readonly IConfiguration _configuration;
 
-        public TradeController(IOptions<TradingOptions> tradingOptions, IStocksService stockService, IFinnhubService finnhubService, IConfiguration configuration )
+        public TradeController(IOptions<TradingOptions> tradingOptions, IStocksService stockService, IFinnhubCompanyProfileService finnhubCompanyProfileService, IFinnhubSotckService finnhubSotckService, IFinnhubStockPriceQuoteSerivce finnhubStockPriceQuoteSerivce, IConfiguration configuration )
         {
             _tradingOptions = tradingOptions.Value;
-            _finnhubService = finnhubService;
+            _finnhubCompanyProfileService = finnhubCompanyProfileService;
+            _finnhubSotckService = finnhubSotckService;
+            _finnhubStockPriceQuoteSerivce = finnhubStockPriceQuoteSerivce;
             _stocksService = stockService;
             _configuration = configuration;
         }
@@ -38,10 +42,10 @@ namespace StockApp.Controlers
                 stockSymbol = "MSFT";
 
             //get company profile from API server
-            Dictionary<string, object>? companyProfileDictionary = await _finnhubService.GetCompanyProfile(stockSymbol);
+            Dictionary<string, object>? companyProfileDictionary = await _finnhubCompanyProfileService.GetCompanyProfile(stockSymbol);
 
             //get stock price quote from API server
-            Dictionary<string, object>? stockQuoteDictionary = await _finnhubService.GetSotckPriceQuote(stockSymbol);
+            Dictionary<string, object>? stockQuoteDictionary = await _finnhubStockPriceQuoteSerivce.GetSotckPriceQuote(stockSymbol);
 
             //create model object
             StockTrade stockTrade = new StockTrade() { StockSymbol = stockSymbol };

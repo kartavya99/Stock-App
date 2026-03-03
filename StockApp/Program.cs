@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Repositories;
 using RepositoryContracts;
 using ServiceContracts;
+using ServiceContracts.FinnhubService;
 using Services;
+using Services.FinnhubService;
 using StockApp;
 using StockApp.Middleware;
 
@@ -12,7 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 //Services
 builder.Services.AddControllersWithViews();
 builder.Services.Configure<TradingOptions>(builder.Configuration.GetSection("TradingOptions"));
-builder.Services.AddTransient<IFinnhubService, FinnhubService>();
+builder.Services.AddTransient<IFinnhubCompanyProfileService, FinnhubCompanyProfileService>();
+builder.Services.AddTransient<IFinnhubStockPriceQuoteSerivce, FinnhunStockPriceQuoteService>();
+builder.Services.AddTransient<IFinnhubSotckService, FinnhubStocksService>();
+builder.Services.AddTransient<IFinnhubSearchStocksService, FinnhubSearchStocksService>();
 builder.Services.AddTransient<IStocksService, StockService>();
 builder.Services.AddTransient<IStockRepository,StocksRepository>();
 builder.Services.AddTransient<IFinnhubRepository, FinnhubRepository>();
@@ -24,6 +29,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 builder.Services.AddHttpClient();
+builder.Services.AddTransient<ExcpetionHandlingMiddleware>();
 
 
 var app = builder.Build();
