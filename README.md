@@ -15,6 +15,16 @@ An ASP.NET Core MVC application for tracking stocks and placing simulated buy an
 Structured with Clean Architecture — domain, application, infrastructure and presentation layers kept separate so business logic doesn't depend on data access or framework concerns. Entity Framework Core handles persistence
 against SQL Server, and unit tests use Moq to isolate services from their dependencies.
 
+## Testing
+
+Three test projects covering different layers:
+
+- **Stocks.Services.Tests** — unit tests for service-layer business logic,
+  with Moq isolating dependencies
+- **Stocks.Controller.Tests** — unit tests for MVC controller behaviour
+- **Stocks.Integration.Tests** — integration tests exercising the stack
+  end to end
+
 ## Stack
 
 - ASP.NET Core MVC
